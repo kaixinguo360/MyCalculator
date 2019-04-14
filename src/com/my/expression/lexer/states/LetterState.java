@@ -1,17 +1,24 @@
-package com.my.calculator.utils.lexer.states;
+package com.my.expression.lexer.states;
 
-import com.my.calculator.utils.lexer.State;
-import com.my.calculator.utils.lexer.Token;
-import com.my.calculator.utils.lexer.TokenType;
+import com.my.expression.Context;
+import com.my.expression.lexer.State;
+import com.my.expression.lexer.Token;
+import com.my.expression.lexer.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 单词识别状态
+ */
 public class LetterState implements State {
 
-    private final StringBuffer buffer = new StringBuffer();
-
     private final List<Character> chars = new ArrayList<>();
+    private Context context;
+
+    public LetterState(Context context) {
+        this.context = context;
+    }
 
     @Override
     public boolean isStartsWith(char ch) {
@@ -28,6 +35,7 @@ public class LetterState implements State {
         }
     }
 
+    private final StringBuffer buffer = new StringBuffer();
     @Override
     public Token build() {
 
@@ -36,9 +44,8 @@ public class LetterState implements State {
             buffer.append(ch);
         }
         String str = buffer.toString();
-
         chars.clear();
 
-        return Token.getToken(TokenType.WORD, str);
+        return new Token(context.isOperator(str) ? TokenType.OPERATOR : TokenType.WORD, str);
     }
 }

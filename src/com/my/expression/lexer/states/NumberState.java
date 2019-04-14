@@ -1,13 +1,16 @@
-package com.my.calculator.utils.lexer.states;
+package com.my.expression.lexer.states;
 
-import com.my.calculator.utils.lexer.State;
-import com.my.calculator.utils.lexer.Token;
-import com.my.calculator.utils.lexer.TokenType;
-import com.my.calculator.utils.ParserException;
+import com.my.expression.lexer.LexerException;
+import com.my.expression.lexer.State;
+import com.my.expression.lexer.Token;
+import com.my.expression.lexer.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数字识别状态
+ */
 public class NumberState implements State {
 
     private final StringBuffer buffer = new StringBuffer();
@@ -21,7 +24,7 @@ public class NumberState implements State {
     }
 
     @Override
-    public boolean next(char ch) throws ParserException {
+    public boolean next(char ch) throws LexerException {
         if (Character.isDigit(ch)) {
             chars.add(ch);
             return true;
@@ -31,7 +34,8 @@ public class NumberState implements State {
                 chars.add(ch);
                 return true;
             } else {
-                throw new ParserException("错误的数字格式");
+                chars.add(ch);
+                throw new LexerException("错误的数字格式: " + getString());
             }
         }else {
             return false;
@@ -41,14 +45,18 @@ public class NumberState implements State {
     @Override
     public Token build() {
 
+        String str = getString();
+        chars.clear();
+        addedPoint = false;
+
+        return new Token(TokenType.NUM, str);
+    }
+
+    private String getString() {
         buffer.setLength(0);
         for (char ch : chars) {
             buffer.append(ch);
         }
-
-        chars.clear();
-        addedPoint = false;
-
-        return Token.getToken(TokenType.NUM, buffer.toString());
+        return buffer.toString();
     }
 }

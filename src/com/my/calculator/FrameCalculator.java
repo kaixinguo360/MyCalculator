@@ -6,14 +6,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * 窗口界面的计算器
+ */
 public class FrameCalculator extends JFrame {
-
-    private boolean isCalculated = false;
-    private StringCalculator stringCalculator = new StringCalculator();
-    private JTextField text;
-    private JPanel keyboard;
+    private StringCalculator stringCalculator; // 文本界面计算器
+    private JTextField text; // 屏幕
+    private JPanel keyboard; // 键盘
 
     private FrameCalculator() {
+
+        // 创建文本界面计算器, 用于计算输入结果
+        stringCalculator = new StringCalculator();
 
         // 设置布局
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -45,6 +49,7 @@ public class FrameCalculator extends JFrame {
         setVisible(true);
     }
 
+    // 添加按钮
     private void addButtons() {
 
         addButton("sin", event -> text.setText(text.getText() + "sin("));
@@ -93,6 +98,7 @@ public class FrameCalculator extends JFrame {
         keyboard.add(button);
     }
 
+    private boolean isCalculated = false; // 当前显示的是否计算结果
     private ActionListener defaultActionListener = event -> {
         if (isCalculated) {
             text.setText("");
@@ -110,6 +116,7 @@ public class FrameCalculator extends JFrame {
         public void keyReleased(KeyEvent e) {}
     };
 
+    // 计算并显示表达式的结果
     private void calculate() {
         String input = text.getText();
         if (!"".equals(input)) {

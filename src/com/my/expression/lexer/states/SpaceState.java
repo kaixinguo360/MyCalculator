@@ -1,8 +1,11 @@
-package com.my.calculator.utils.lexer.states;
+package com.my.expression.lexer.states;
 
-import com.my.calculator.utils.lexer.State;
-import com.my.calculator.utils.lexer.Token;
+import com.my.expression.lexer.State;
+import com.my.expression.lexer.Token;
 
+/**
+ * 空白字符识别状态
+ */
 public class SpaceState implements State {
 
     @Override
